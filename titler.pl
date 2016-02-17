@@ -67,4 +67,5 @@ sub get_title {
 
 		}
 }
+}
 Irssi::signal_add('message public','get_title');
