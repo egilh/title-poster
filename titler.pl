@@ -38,14 +38,11 @@ sub get_title {
 					last;
 				}
 			}
-if ($urlfound eq 1) {
-
-				if (/^*.*.*$/) {
-          $titleline = `wget -q -O- '$url' | awk "/<title>([^<]*)<\/"`;
-          $titlestart = index($titleline, "<title>");
-          $titleend = index($titleline, "</title>");
-          $title = substr $titleline, $titlestart + 7, -8;
-				}
+      if ($urlfound eq 1) {
+        $titleline = `wget -q -O- '$url' | awk "/<title>([^<]*)<\/"`;
+        $titlestart = index($titleline, "<title>");
+        $titleend = index($titleline, "</title>");
+        $title = substr $titleline, $titlestart + 7, -8;
 				foreach my $d_title (@denied_titles) {
 					if (index($title, $d_title) ne -1) {
 						return;
