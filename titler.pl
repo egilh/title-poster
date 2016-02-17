@@ -38,15 +38,8 @@ sub get_title {
 					last;
 				}
 			}
-			if ($urlfound eq 1) {
-			my @splitline = split(' ',$_);
-			foreach $word (@splitline) {
-				if (index($word, "http") != -1) {
-					$urlfound = 1;
-					$url = $word;
-					last;
-				}
-			}
+if ($urlfound eq 1) {
+
 				if (/^*.*.*$/) {
           $titleline = `wget -q -O- '$url' | awk '/<title>([^<]*)<\/title>/'`;
           $titlestart = index($titleline, "<title>");
