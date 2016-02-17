@@ -41,7 +41,7 @@ sub get_title {
 if ($urlfound eq 1) {
 
 				if (/^*.*.*$/) {
-          $titleline = `wget -q -O- '$url' | awk '\'/<title>([^<]*)<\/title>/'\'`;
+          $titleline = `wget -q -O- '$url' | awk "/<title>([^<]*)<\/title>/"`;
           $titlestart = index($titleline, "<title>");
           $titleend = index($titleline, "<title/>");
           $title = substr $titleline, $titlestart + 7, -8;
