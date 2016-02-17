@@ -37,10 +37,7 @@ sub get_title {
 				}
 			}
       if ($urlfound eq 1) {
-        $titleline = `wget -q -O- '$url' | awk "/<title>([^<]*)<\/"`;
-        $titlestart = index($titleline, "<title>");
-        $titleend = index($titleline, "</title>");
-        $title = substr $titleline, $titlestart + 7, -9;
+        $title = `wget -q -O- vg.no | grep -m 1 '<title>' | sed 's/<*.title>//g'` ;
 				foreach my $d_title (@denied_titles) {
 					if (index($title, $d_title) ne -1) {
 						return;
