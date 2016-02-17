@@ -29,6 +29,9 @@ sub get_title {
 
     $_ = $msg;
     if ($chatnet eq $chan) {
+      if (/^http.*.*$/ or /^https.*.*$/)) {
+        my @splitline = split(' ',$_);
+        foreach $word (@splitline) {
 			if (index($word, "http") != -1) {
 					$urlfound = 1;
 					$url = $word;
