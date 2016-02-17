@@ -4,12 +4,11 @@ use strict;
 use Irssi;
 use vars qw($VERSION %IRSSI);
 
-$VERSION = '001';
+$VERSION = '0.1';
 %IRSSI = (
-    authors     => 'gaLezki',
-    contact     => 'galezkiatgmail.com',
-    name        => 'titler',
-    description => 'Fetches titles',
+    authors     => 'egilh, Monk',
+    name        => 'title-poster',
+    description => 'Fetches and posts titles',
     license     => 'GNU General Public License 3.0' );
 
 
@@ -21,7 +20,7 @@ my $word;
 my $url;
 my $urlfound = 0;
 my $title;
-my @denied_titles = ("Streamable - simple", "hockey - Jiffier gifs through HTML5 Video Conversion.",
+my @denied_titles = ("Streamable - simple", "Jiffier gifs through HTML5 Video Conversion.",
 					"Untitled - Gfycat");
 
 
@@ -64,8 +63,5 @@ sub get_title {
 			}
 
 		}
-
-    }
-
 }
 Irssi::signal_add('message public','get_title');
