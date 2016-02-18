@@ -1,2 +1,3 @@
 # title-poster
--- requires libmojolicious-perl 
+** Simple IRRSI script for fetching URL's and posting the title in channel **
+> requires libmojolicious-perl
