@@ -12,13 +12,11 @@ $VERSION = '0.1';
     license     => 'GNU General Public License 3.0' );
 
 my $chan = "#channel";
-my $titleline;
-my $titlestart;
-my $titleend;
 my $word;
 my $url;
 my $urlfound = 0;
 my $title;
+my @cmd;
 my @denied_titles = (
 );
 
@@ -37,15 +35,16 @@ sub get_title {
 				}
 			}
       if ($urlfound eq 1) {
-#        $title = system q{wget -q -O- $url | awk '/<title>([^<]*)<\/title>/ {gsub(/<title>|<\/title>/,"");print$0;}';};
+#        $cmd = (`wget -q -O- $url | awk '/<title>([^<]*)<\/title>/ {gsub(/<title>|<\/title>/,"");print$0;}';}`);
+#        $title = system q(@cmd);
         $title = `mojo get -r $url title text` ;
+        $title = substr($title, 0, 150);
 				foreach my $d_title (@denied_titles) {
 					if (index($title, $d_title) ne -1) {
 						return;
 					}
 				}
 			if ($title ne "") {
-          $title = pack("A10", $title);
 					$server->command("msg $chan $title");
 				}
 				$urlfound = 0;
