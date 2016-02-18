@@ -45,7 +45,7 @@ sub get_title {
 					}
 				}
 			if ($title ne "") {
-          $title = pack"("A10", $title)
+          $title = pack"("A10", $title);
 					$server->command("msg $chan $title");
 				}
 				$urlfound = 0;
