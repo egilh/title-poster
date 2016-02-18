@@ -37,7 +37,8 @@ sub get_title {
 				}
 			}
       if ($urlfound eq 1) {
-        $title = `wget -q -O- vg.no | grep -m 1 '<title>' | sed 's/<*.title>//g'` ;
+#        $title = system q{wget -q -O- vg.no | awk '/<title>([^<]*)<\/title>/ {gsub(/<title>|<\/title>/,"");print$0;}';};
+        $title = `mojo get -r $url title text` ;
 				foreach my $d_title (@denied_titles) {
 					if (index($title, $d_title) ne -1) {
 						return;
