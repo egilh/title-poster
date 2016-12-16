@@ -3,6 +3,7 @@
 use strict;
 use Irssi;
 use vars qw($VERSION %IRSSI);
+require HTML::HeadParser;
 
 $VERSION = '0.1';
 %IRSSI = (
@@ -16,6 +17,8 @@ my $word;
 my $url;
 my $urlfound = 0;
 my $title;
+my $html;
+my $p = HTML::HeadParser->new;
 my @cmd;
 my @denied_titles = (
 );
@@ -28,28 +31,28 @@ sub get_title {
     if (/^http.*.*$/ or /^https.*.*$/) {
       my @splitline = split(' ',$_);
       foreach $word (@splitline) {
-		    if (index($word, "http") != -1) {
+        if (index($word, "http") != -1) {
         $urlfound = 1;
-				$url = $word;
-				last;
-				}
-			}
+        $url = $word;
+        last;
+        }
+      }
       if ($urlfound eq 1) {
-#        $cmd = (`wget -q -O- $url | awk '/<title>([^<]*)<\/title>/ {gsub(/<title>|<\/title>/,"");print$0;}';}`);
-#        $title = system q(@cmd);
-        $title = `mojo get -r $url title text` ;
+        $html = (`wget -q -O- $url`);
+	$p->parse($html);
+	$title = $p->header('Title');
         $title = substr($title, 0, 150);
-				foreach my $d_title (@denied_titles) {
-					if (index($title, $d_title) ne -1) {
-						return;
-					}
-				}
-			if ($title ne "") {
-					$server->command("msg $chan $title");
-				}
-				$urlfound = 0;
-			}
-		}
+        foreach my $d_title (@denied_titles) {
+          if (index($title, $d_title) ne -1) {
+            return;
+          }
+        }
+      if ($title ne "") {
+          $server->command("msg $chan $title");
+        }
+        $urlfound = 0;
+      }
+    }
   }
 }
 Irssi::signal_add('message public','get_title');
