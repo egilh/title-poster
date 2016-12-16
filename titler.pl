@@ -18,8 +18,7 @@ my $url;
 my $urlfound = 0;
 my $title;
 my $html;
-my $p = HTML::HeadParser->new;
-my @cmd;
+my $p;
 my @denied_titles = (
 );
 
@@ -38,6 +37,7 @@ sub get_title {
         }
       }
       if ($urlfound eq 1) {
+        $p = HTML::HeadParser->new;
         $html = (`wget -q -O- $url`);
 	$p->parse($html);
 	$title = $p->header('Title');
