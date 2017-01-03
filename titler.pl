@@ -38,10 +38,10 @@ sub get_title {
       }
       if ($urlfound eq 1) {
         $p = HTML::HeadParser->new;
-        $html = (`wget -q -O- $url`);
+        $html = (`wget --header='Accept-Charset: utf-8' --header='Accept-Language: nb-no, en-us' -q -O- $url`);
 	$p->parse($html);
 	$title = $p->header('Title');
-        $title = substr($title, 0, 150);
+        $title = substr($title, 0, 250);
         foreach my $d_title (@denied_titles) {
           if (index($title, $d_title) ne -1) {
             return;
