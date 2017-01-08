@@ -12,8 +12,9 @@ $VERSION = '0.1';
     description => 'Fetches and posts titles',
     license     => 'GNU General Public License 3.0' );
 
-my $chan = "#channel";
+my $chan = '#channel';
 my $word;
+my $useragent = 'Mozilla';
 my $url;
 my $urlfound = 0;
 my $title;
@@ -30,7 +31,7 @@ sub get_title {
     if (/^http.*.*$/ or /^https.*.*$/) {
       my @splitline = split(' ',$_);
       foreach $word (@splitline) {
-        if (index($word, "http") != -1) {
+        if (index($word, 'http') != -1) {
         $urlfound = 1;
         $url = $word;
         last;
@@ -38,19 +39,19 @@ sub get_title {
       }
       if ($urlfound eq 1) {
         $p = HTML::HeadParser->new;
-        $html = (`wget --header='Accept-Charset: utf-8' --header='Accept-Language: nb-no, en-us' -q -O- $url`);
-	$p->parse($html);
-	$title = $p->header('Title');
+        $html = (`wget -U $useragent --header='Accept-Charset: utf-8' --header='Accept-Language: nb-no, en-us' -q -O- $url`);
+	      $p->parse($html);
+	      $title = $p->header('Title');
         $title = substr($title, 0, 250);
         foreach my $d_title (@denied_titles) {
           if (index($title, $d_title) ne -1) {
             return;
           }
         }
-      if ($title ne "") {
-          $server->command("msg $chan $title");
-        }
-        $urlfound = 0;
+    if ($title ne '') {
+      $server->command('msg $chan $title');
+      }
+    $urlfound = 0;
       }
     }
   }
