@@ -51,7 +51,7 @@ sub get_title {
                     }
                 }
                 if ( $title ne '' ) {
-                    $server->command('msg $chan $title');
+                    $server->command("msg $chan $title");
                 }
                 $urlfound = 0;
             }
