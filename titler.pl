@@ -14,13 +14,11 @@ $VERSION = '0.1';
 );
 
 my $chan = '#channel';
-my $word;
 my $useragent = 'Mozilla';
-my $url;
+my ($url, $word, $title, $html, $a, $p) = "";;
+my @urls = ();
 my $urlfound = 0;
-my $title;
-my $html;
-my $p;
+my $sameurl = 0;
 my @denied_titles = ();
 
 sub get_title {
@@ -28,32 +26,30 @@ sub get_title {
 
     $_ = $msg;
     if ( $chatnet eq $chan ) {
-        if ( /^http.*.*$/ or /^https.*.*$/ ) {
-            my @splitline = split( ' ', $_ );
+        if ( $_ =~ /(https?\:\/\/[\.a-zA-Z0-9\/+:\?\=\&\w_-]{0,500})/gi ) {
+            my @splitline = split( /\s/, $_ );
             foreach $word (@splitline) {
                 if ( index( $word, 'http' ) != -1 ) {
                     $urlfound = 1;
-                    $url      = $word;
-                    last;
-                }
-            }
-            if ( $urlfound eq 1 ) {
-                $p    = HTML::HeadParser->new;
-                $html = (
+                    $url = $word;
+                    $p    = HTML::HeadParser->new;
+                    $html = (
 `wget -U $useragent --header='Accept-Charset: utf-8' --header='Accept-Language: nb-no, en-us' -q -O- $url`
-                );
-                $p->parse($html);
-                $title = $p->header('Title');
-                $title = substr( $title, 0, 250 );
-                foreach my $d_title (@denied_titles) {
-                    if ( index( $title, $d_title ) ne -1 ) {
-                        return;
+                    );
+                    $p->parse($html);
+                    $title = $p->header('Title');
+                    $title = substr( $title, 0, 250 );
+                    foreach my $d_title (@denied_titles) {
+                        if ( index( $title, $d_title ) ne -1 ) {
+                            return;
+                        }
                     }
+                    if ( $title ne '' ) {
+                        $server->command("msg $chan $title");
+                    }
+                    $urlfound = 0;
+                    #$sameurl = 0;
                 }
-                if ( $title ne '' ) {
-                    $server->command("msg $chan $title");
-                }
-                $urlfound = 0;
             }
         }
     }
