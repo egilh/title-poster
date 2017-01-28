@@ -13,7 +13,7 @@ $VERSION = '0.1';
     license     => 'GNU General Public License 3.0'
 );
 
-my $chan = '#test';
+my $chan = '#channel';
 my $useragent = 'Mozilla';
 my ($url, $word, $title, $html, $a, $p) = "";;
 my @urls = ();
