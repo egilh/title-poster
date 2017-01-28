@@ -13,7 +13,7 @@ $VERSION = '0.1';
     license     => 'GNU General Public License 3.0'
 );
 
-my $chan = '#channel';
+my $chan = '#test';
 my $useragent = 'Mozilla';
 my ($url, $word, $title, $html, $a, $p) = "";;
 my @urls = ();
@@ -34,7 +34,8 @@ sub get_title {
                     $url = $word;
                     $p    = HTML::HeadParser->new;
                     $html = (
-`wget -U $useragent --header='Accept-Charset: utf-8' --header='Accept-Language: nb-no, en-us' -q -O- $url`
+                    `curl -L -s --compressed --max-filesize 1000000 -H 'Accept-Language: nb-no, en-us' -A $useragent $url`
+#`wget -U $useragent --header='Accept-Charset: utf-8' --header='Accept-Language: nb-no, en-us' -q -O- $url`
                     );
                     $p->parse($html);
                     $title = $p->header('Title');
