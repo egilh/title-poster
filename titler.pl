@@ -39,7 +39,7 @@ sub get_title {
                     );
                     $p->parse($html);
                     $title = $p->header('Title');
-                    $title = substr( $title, 0, 250 );
+                    $title = substr( $title, 0, 450 );
                     foreach my $d_title (@denied_titles) {
                         if ( index( $title, $d_title ) ne -1 ) {
                             return;
